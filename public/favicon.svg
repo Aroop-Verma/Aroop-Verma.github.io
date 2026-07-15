@@ -1,9 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <text
-    x="50"
-    y="52"
-    font-size="82"
-    text-anchor="middle"
-    dominant-baseline="central"
-  >🗒️</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- dark rounded tile so it's visible on light or dark browser tabs -->
+  <rect width="32" height="32" rx="6" fill="#0f0a1e" />
+  <!-- notepad page -->
+  <rect x="8" y="8" width="16" height="17" rx="1.5" fill="#fdfdff" />
+  <!-- spiral binding across the top -->
+  <g stroke="#ff2e97" stroke-width="1.7" stroke-linecap="round">
+    <line x1="12" y1="5.5" x2="12" y2="9.5" />
+    <line x1="16" y1="5.5" x2="16" y2="9.5" />
+    <line x1="20" y1="5.5" x2="20" y2="9.5" />
+  </g>
+  <!-- ruled lines -->
+  <g stroke="#5b5b66" stroke-width="1.5" stroke-linecap="round">
+    <line x1="11" y1="14" x2="21" y2="14" />
+    <line x1="11" y1="17.5" x2="21" y2="17.5" />
+    <line x1="11" y1="21" x2="18" y2="21" />
+  </g>
 </svg>
