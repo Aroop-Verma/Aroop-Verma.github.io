@@ -1,0 +1,115 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection, render } from "astro:content";
+import type { GetStaticPaths } from "astro";
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+---
+
+<Base title={`${post.data.title} — Aroop Verma`} description={post.data.description}>
+  <a class="back" href="/blog">← blog</a>
+
+  <article class="prose">
+    <header>
+      <h1>{post.data.title}</h1>
+      <p class="meta muted">
+        <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+        {
+          post.data.tags.length > 0 && (
+            <span class="tags">
+              {post.data.tags.map((t) => (
+                <span class="tag">{t}</span>
+              ))}
+            </span>
+          )
+        }
+      </p>
+      <hr class="rule" />
+    </header>
+
+    <Content />
+  </article>
+</Base>
+
+<style>
+  .back {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+  h1 {
+    margin: 0 0 0.6rem;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+  .tags {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  /* long-form prose — extra breathing room for the pixel font */
+  .prose :global(h2) {
+    margin-top: 2.2rem;
+    color: var(--cyan);
+  }
+  .prose :global(h3) {
+    margin-top: 1.8rem;
+  }
+  .prose :global(p),
+  .prose :global(li) {
+    line-height: 1.85;
+  }
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.3rem;
+  }
+  .prose :global(li) {
+    margin-bottom: 0.3rem;
+  }
+  .prose :global(pre) {
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    line-height: 1.6;
+  }
+  .prose :global(pre code) {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: inherit;
+  }
+  .prose :global(blockquote) {
+    margin: 1.4rem 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--magenta);
+    color: var(--muted);
+  }
+  .prose :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+  }
+  .prose :global(a) {
+    border-bottom: 1px solid currentColor;
+  }
+</style>

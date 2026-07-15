@@ -1,0 +1,85 @@
+---
+import Base from "../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const papers = (await getCollection("papers")).sort(
+  (a, b) => b.data.year - a.data.year,
+);
+---
+
+<Base title="Papers — Aroop Verma" description="Publications and preprints.">
+  <h1><span class="gradient-text">papers</span></h1>
+  <hr class="rule" />
+
+  {papers.length === 0 && <p class="muted">No papers yet.</p>}
+
+  <ol class="list">
+    {
+      papers.map((p) => (
+        <li class="paper">
+          <span class="year">{p.data.year}</span>
+          <div class="body">
+            <h2>{p.data.title}</h2>
+            <p class="meta">
+              {p.data.authors} · <span class="venue">{p.data.venue}</span>
+            </p>
+            {p.data.abstract && <p class="muted abstract">{p.data.abstract}</p>}
+            <div class="links">
+              {p.data.pdf && <a href={p.data.pdf}>[pdf]</a>}
+              {p.data.code && <a href={p.data.code}>[code]</a>}
+            </div>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</Base>
+
+<style>
+  h1 {
+    margin: 0;
+  }
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 2rem;
+  }
+  .paper {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: 0.5rem 1rem;
+  }
+  .year {
+    color: var(--orange);
+    font-size: 0.95rem;
+    padding-top: 0.15rem;
+  }
+  .body h2 {
+    margin: 0 0 0.3rem;
+    font-size: 1.15rem;
+  }
+  .meta {
+    margin: 0 0 0.5rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .venue {
+    color: var(--cyan);
+  }
+  .abstract {
+    margin: 0 0 0.6rem;
+    font-size: 0.92rem;
+  }
+  .links {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+  @media (max-width: 480px) {
+    .paper {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

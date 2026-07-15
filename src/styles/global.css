@@ -1,0 +1,233 @@
+/* ============================================================
+   Monocraft — self-hosted pixel monospace
+   ============================================================ */
+@font-face {
+  font-family: "Monocraft";
+  src: url("/fonts/Monocraft.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   Design tokens — light theme
+   ============================================================ */
+:root {
+  /* palette — light theme (white background, black text) */
+  --bg: #ffffff;
+  --bg-deep: #f3f3f6;
+  --surface: #f7f7fa;
+  --surface-2: #ececf1;
+  --border: #dcdce4;
+
+  /* accents darkened so they stay readable on white */
+  --magenta: #d6006e;
+  --cyan: #0e7d94;
+  --purple: #8b3ff0;
+  --orange: #b45309;
+
+  --text: #000000;
+  --muted: #4a4a55;
+  --faint: #85858f;
+
+  --grid: rgba(0, 0, 0, 0.05);
+
+  /* the classic sunset, used sparingly */
+  --sunset: linear-gradient(100deg, var(--magenta), var(--purple) 55%, var(--cyan));
+
+  /* type */
+  --font: "Monocraft", ui-monospace, "Cascadia Code", "Courier New", monospace;
+
+  /* rhythm */
+  --measure: 68ch;
+  --radius: 10px;
+  --pad: clamp(1rem, 4vw, 2rem);
+
+  /* glow — one shared knob so the effect stays consistent */
+  --glow-magenta: 0 0 0.5em rgba(214, 0, 110, 0.25);
+  --glow-cyan: 0 0 0.5em rgba(14, 125, 148, 0.22);
+
+  color-scheme: light;
+}
+
+/* dark theme — inverted surfaces & text; accent/header colours unchanged */
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --bg-deep: #0d0d0f;
+  --surface: #131318;
+  --surface-2: #1b1b22;
+  --border: #2c2c36;
+
+  --text: #ffffff;
+  --muted: #b0b0bb;
+  --faint: #6f6f7a;
+
+  --grid: rgba(255, 255, 255, 0.06);
+
+  color-scheme: dark;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  /* faint grid — cheap, no images, no JS */
+  background-image:
+    radial-gradient(120% 80% at 50% -10%, rgba(214, 0, 110, 0.04), transparent 60%),
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 100% 100%, 33px 33px, 33px 33px;
+  background-attachment: fixed;
+  color: var(--text);
+  /* pixel fonts need more air to read comfortably */
+  font-family: var(--font);
+  font-size: clamp(15px, 1rem + 0.15vw, 17px);
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* honour reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ============================================================
+   Typography
+   ============================================================ */
+h1,
+h2,
+h3 {
+  line-height: 1.3;
+  font-weight: 400; /* Monocraft reads best without faux-bold */
+  letter-spacing: 0.02em;
+}
+
+h1 {
+  font-size: clamp(2rem, 6vw, 3.2rem);
+}
+
+h2 {
+  font-size: clamp(1.4rem, 3.5vw, 1.9rem);
+}
+
+h3 {
+  font-size: 1.15rem;
+}
+
+p {
+  max-width: var(--measure);
+}
+
+a {
+  color: var(--cyan);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease, text-shadow 0.15s ease;
+}
+
+a:hover {
+  color: var(--magenta);
+  border-bottom-color: var(--magenta);
+  text-shadow: var(--glow-magenta);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+code {
+  font-family: var(--font);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.05em 0.4em;
+  font-size: 0.9em;
+  color: var(--orange);
+}
+
+::selection {
+  background: var(--magenta);
+  color: #ffffff;
+}
+
+/* ============================================================
+   Reusable utilities
+   ============================================================ */
+.wrap {
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+
+/* key headings — solid hot magenta, flat */
+.gradient-text {
+  color: var(--magenta);
+}
+
+.glow {
+  text-shadow: var(--glow-cyan);
+}
+
+/* a hairline rule under section titles */
+.rule {
+  height: 2px;
+  border: 0;
+  background: var(--magenta);
+  opacity: 0.8;
+  margin: 0.6rem 0 1.6rem;
+  max-width: 6rem;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 1.2rem 1.4rem;
+  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.card:hover {
+  border-color: var(--magenta);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px -12px rgba(214, 0, 110, 0.4);
+}
+
+/* small square tag for skills, venues, post tags */
+.tag {
+  display: inline-block;
+  font-size: 0.78em;
+  color: var(--cyan);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0.15em 0.7em;
+  line-height: 1.6;
+}

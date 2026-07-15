@@ -1,0 +1,76 @@
+---
+import Base from "../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<Base title="Projects — Aroop Verma" description="Projects and things I've built.">
+  <h1><span class="gradient-text">projects</span></h1>
+  <hr class="rule" />
+
+  {projects.length === 0 && <p class="muted">No projects yet.</p>}
+
+  <div class="list">
+    {
+      projects.map((p) => (
+        <article class="card">
+          <div class="head">
+            <h2>{p.data.title}</h2>
+            <div class="links">
+              {p.data.repo && <a href={p.data.repo}>repo</a>}
+              {p.data.url && <a href={p.data.url}>link</a>}
+            </div>
+          </div>
+          <p class="muted desc">{p.data.description}</p>
+          {p.data.tags.length > 0 && (
+            <ul class="tags">
+              {p.data.tags.map((t) => (
+                <li class="tag">{t}</li>
+              ))}
+            </ul>
+          )}
+        </article>
+      ))
+    }
+  </div>
+</Base>
+
+<style>
+  h1 {
+    margin: 0;
+  }
+  .list {
+    display: grid;
+    gap: 1rem;
+  }
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+  }
+  .head h2 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+  .links {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+  .desc {
+    margin: 0.6rem 0 0.9rem;
+  }
+  .tags {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+</style>

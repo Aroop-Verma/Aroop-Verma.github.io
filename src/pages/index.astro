@@ -1,0 +1,27 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base>
+  <section class="hero">
+    <h1><span class="gradient-text">Aroop Verma</span></h1>
+    <p class="oneliner">biology, data, and the space between</p>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: clamp(2rem, 12vh, 7rem);
+  }
+
+  h1 {
+    margin: 0 0 0.6rem;
+  }
+
+  .oneliner {
+    margin: 0;
+    color: var(--muted);
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    letter-spacing: 0.06em;
+  }
+</style>

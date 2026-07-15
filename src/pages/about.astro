@@ -1,0 +1,139 @@
+---
+import Base from "../layouts/Base.astro";
+
+const skills = [
+  {
+    group: "Molecular Biology",
+    items: [
+      "Mammalian cell culture",
+      "qRT-PCR",
+      "Western blotting",
+      "RIP",
+      "Cloning",
+    ],
+  },
+  {
+    group: "Bioinformatics",
+    items: [
+      "WGS/WES",
+      "bulk RNA-seq",
+      "scRNA-seq",
+      "omics",
+    ],
+  },
+  {
+    group: "Languages",
+    items: [
+      "python",
+      "R",
+      "bash",
+    ],
+  },
+  {
+    group: "AI/ML",
+    items: [
+      "numpy",
+      "pandas",
+      "PyTorch",
+      "keras",
+      "scikit-learn",
+    ],
+  },
+];
+
+const socials = [
+  { label: "github", href: "https://github.com/Aroop-Verma" },
+  { label: "linkedin", href: "https://www.linkedin.com/in/aroop-verma" },
+];
+---
+
+<Base
+  title="About — Aroop Verma"
+  description="Aroop Verma — molecular biologist and bioinformatician working in RNA biology and computational genomics."
+>
+  <section class="intro">
+    <h1><span class="gradient-text">about</span></h1>
+    <hr class="rule" />
+    <p>
+      Hi, I'm Aroop — a molecular biologist and bioinformatician who's just as
+      at home at the lab bench as in the terminal window! Welcome to my personal
+      blog.
+    </p>
+    <p>
+      I'm interested in data-driven biological research! If you'd like to
+      have a conversation, please reach out to me on <a
+        href="https://www.linkedin.com/in/aroop-verma">LinkedIn</a> — I'll be
+      happy to connect.
+    </p>
+  </section>
+
+  <section class="skills">
+    <h2>skills</h2>
+    <hr class="rule" />
+    <div class="skill-grid">
+      {
+        skills.map((s) => (
+          <div class="card">
+            <h3>{s.group}</h3>
+            <p class="skill-items">{s.items.join(", ")}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="contact">
+    <h2>contact</h2>
+    <hr class="rule" />
+    <ul class="socials">
+      {
+        socials.map((s) => (
+          <li>
+            <a href={s.href}>{s.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
+
+<style>
+  section {
+    margin-bottom: clamp(2.5rem, 7vw, 4rem);
+  }
+
+  .intro h1 {
+    margin: 0;
+  }
+
+  .skill-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+
+  .card h3 {
+    margin: 0 0 0.8rem;
+    color: var(--cyan);
+    font-size: 1rem;
+  }
+
+  .skill-items {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .socials {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .socials {
+    gap: 0.5rem 1.4rem;
+    font-size: 1.05rem;
+  }
+</style>

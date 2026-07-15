@@ -1,0 +1,210 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Aroop Verma",
+  description = "Aroop Verma — molecular biologist and bioinformatician working in RNA biology, computational genomics, and machine learning.",
+} = Astro.props;
+
+const nav = [
+  { href: "/", label: "home" },
+  { href: "/about", label: "about" },
+  { href: "/projects", label: "projects" },
+  { href: "/blog", label: "blog" },
+];
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? path === "/" : path.startsWith(href);
+
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link
+      rel="preload"
+      href="/fonts/Monocraft.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+    <script is:inline>
+      // Set theme before paint to avoid a flash. Defaults to light.
+      (function () {
+        var saved = localStorage.getItem("theme");
+        document.documentElement.dataset.theme = saved === "dark" ? "dark" : "light";
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="wrap nav">
+        <a class="brand" href="/">home</a>
+        <ul class="nav-links">
+          {
+            nav
+              .filter((n) => n.href !== "/")
+              .map((n) => (
+                <li>
+                  <a
+                    href={n.href}
+                    class:list={["nav-link", { active: isActive(n.href) }]}
+                    aria-current={isActive(n.href) ? "page" : undefined}
+                  >
+                    {n.label}
+                  </a>
+                </li>
+              ))
+          }
+          <li>
+            <button id="theme-toggle" class="theme-toggle" type="button">
+              dark mode
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="wrap">
+      <slot />
+    </main>
+
+    <footer class="site-footer wrap">
+      <span class="muted">© {year} Aroop Verma</span>
+      <span class="muted">built with Astro</span>
+    </footer>
+
+    <script is:inline>
+      (function () {
+        var btn = document.getElementById("theme-toggle");
+        if (!btn) return;
+        var root = document.documentElement;
+        function sync() {
+          var dark = root.dataset.theme === "dark";
+          btn.textContent = dark ? "light mode" : "dark mode";
+          btn.setAttribute("aria-pressed", String(dark));
+          btn.setAttribute(
+            "aria-label",
+            dark ? "Switch to light mode" : "Switch to dark mode",
+          );
+        }
+        sync();
+        btn.addEventListener("click", function () {
+          var next = root.dataset.theme === "dark" ? "light" : "dark";
+          root.dataset.theme = next;
+          localStorage.setItem("theme", next);
+          sync();
+        });
+      })();
+    </script>
+
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+
+      main {
+        flex: 1;
+        width: 100%;
+        padding-block: clamp(2rem, 6vw, 4rem);
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(8px);
+        background: color-mix(in srgb, var(--bg) 82%, transparent);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-block: 0.9rem;
+      }
+
+      .brand {
+        font-size: 1.2rem;
+        color: var(--text);
+        border: 0;
+        letter-spacing: 0.1em;
+      }
+      .brand:hover {
+        color: var(--magenta);
+        text-shadow: var(--glow-magenta);
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.35rem 1.1rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        font-size: 0.95rem;
+      }
+
+      /* text dark-mode toggle, offset 300px to the right of the nav links */
+      .theme-toggle {
+        margin-left: 300px;
+        padding: 0;
+        background: none;
+        border: 0;
+        font: inherit;
+        letter-spacing: inherit;
+        color: var(--muted);
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .theme-toggle:hover {
+        color: var(--cyan);
+        text-shadow: var(--glow-cyan);
+      }
+      .theme-toggle:focus-visible {
+        outline: 2px solid var(--magenta);
+        outline-offset: 2px;
+      }
+
+      .nav-link {
+        color: var(--muted);
+        border: 0;
+        padding-bottom: 2px;
+      }
+      .nav-link:hover {
+        color: var(--cyan);
+        text-shadow: var(--glow-cyan);
+      }
+      .nav-link.active {
+        color: var(--text);
+        border-bottom: 2px solid var(--magenta);
+      }
+
+      .site-footer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0.5rem;
+        padding-block: 2rem;
+        border-top: 1px solid var(--border);
+        font-size: 0.82rem;
+      }
+    </style>
+  </body>
+</html>
