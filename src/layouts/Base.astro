@@ -152,6 +152,7 @@ const year = new Date().getFullYear();
 
       .nav-links {
         display: flex;
+        flex: 1;
         flex-wrap: wrap;
         align-items: center;
         gap: 0.35rem 1.1rem;
@@ -161,9 +162,9 @@ const year = new Date().getFullYear();
         font-size: 0.95rem;
       }
 
-      /* text dark-mode toggle, offset 300px to the right of the nav links */
+      /* text dark-mode toggle, pinned to the far right (responsive, no overflow) */
       .theme-toggle {
-        margin-left: 300px;
+        margin-left: auto;
         padding: 0;
         background: none;
         border: 0;
