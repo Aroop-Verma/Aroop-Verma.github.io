@@ -112,6 +112,16 @@ const socials = [
     gap: 1rem;
   }
 
+  /* Hard offset shadow for depth. These cards aren't links, so the inherited
+     .card hover (lift + glow) advertised interactivity that isn't there —
+     neutralised here rather than in global.css, which other pages share. */
+  .skill-grid .card,
+  .skill-grid .card:hover {
+    border-color: var(--text);
+    box-shadow: 6px 6px 0 var(--text);
+    transform: none;
+  }
+
   .card h3 {
     margin: 0 0 0.8rem;
     color: var(--cyan);
