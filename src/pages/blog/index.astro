@@ -16,62 +16,71 @@ const fmt = (d: Date) =>
 
   {posts.length === 0 && <p class="muted">No posts yet.</p>}
 
-  <ul class="list">
+  <div class="post-grid">
     {
       posts.map((post) => (
-        <li class="post">
-          <a class="post-link" href={`/blog/${post.id}`}>
-            <time class="date muted" datetime={post.data.date.toISOString()}>
-              {fmt(post.data.date)}
-            </time>
-            <span class="title">{post.data.title}</span>
-          </a>
+        <a class="card post" href={`/blog/${post.id}`}>
+          <h2 class="title">{post.data.title}</h2>
           {post.data.description && (
             <p class="muted desc">{post.data.description}</p>
           )}
-        </li>
+          <time class="date muted" datetime={post.data.date.toISOString()}>
+            {fmt(post.data.date)}
+          </time>
+        </a>
       ))
     }
-  </ul>
+  </div>
 </Base>
 
 <style>
   h1 {
     margin: 0;
   }
-  .list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .post-grid {
     display: grid;
+    /* One full-width banner per post. Deliberately not auto-fit/auto-fill:
+       multi-column would shrink these back into small cards as posts land. */
+    grid-template-columns: 1fr;
     gap: 1.6rem;
   }
-  .post-link {
+
+  /* Same hard-shadow language as the skills boxes — but these are links, so
+     hover presses the card into its shadow instead of doing nothing. */
+  .post-grid .post {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.4rem 1rem;
-    border: 0;
+    flex-direction: column;
+    gap: 0.6rem;
+    min-height: 170px;
+    border: 1px solid var(--text);
+    box-shadow: 6px 6px 0 var(--text);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
   }
-  .date {
-    font-size: 0.85rem;
-    min-width: 7rem;
+
+  .post-grid .post:hover {
+    border-color: var(--text);
+    transform: translate(3px, 3px);
+    box-shadow: 3px 3px 0 var(--text);
   }
+
   .title {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.4;
     color: var(--text);
-    font-size: 1.1rem;
   }
-  .post-link:hover .title {
+  .post-grid .post:hover .title {
     color: var(--magenta);
-    text-shadow: var(--glow-magenta);
   }
+
   .desc {
-    margin: 0.3rem 0 0 8rem;
-    font-size: 0.9rem;
+    margin: 0;
+    font-size: 0.85rem;
   }
-  @media (max-width: 480px) {
-    .desc {
-      margin-left: 0;
-    }
+
+  /* pinned to the foot of the card so dates line up across the row */
+  .date {
+    margin-top: auto;
+    font-size: 0.8rem;
   }
 </style>
