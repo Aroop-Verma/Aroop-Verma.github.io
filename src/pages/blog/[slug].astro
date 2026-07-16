@@ -19,7 +19,7 @@ const fmt = (d: Date) =>
 ---
 
 <Base title={`${post.data.title} — Aroop Verma`} description={post.data.description}>
-  <a class="back" href="/blog">← blog</a>
+  <a class="back" href="/blog" aria-label="Back to blog">←</a>
 
   <article class="prose">
     <header>
@@ -44,13 +44,20 @@ const fmt = (d: Date) =>
 </Base>
 
 <style>
-  .back {
+  /* arrow only — opts out of the global link underline */
+  .back,
+  .back:hover {
     display: inline-block;
     margin-bottom: 1.5rem;
-    font-size: 0.9rem;
+    font-size: 1.575rem; /* 0.9rem + 75% */
+    border-bottom: 0;
   }
+  /* Post pages run a flat hierarchy: headings sit at body size and are set
+     apart by colour and the rule instead. Scoped here so the larger headings
+     on the other pages are unaffected. */
   h1 {
     margin: 0 0 0.6rem;
+    font-size: 1.5em; /* body size + 50%; em so it tracks the body */
   }
   .meta {
     display: flex;
@@ -69,13 +76,15 @@ const fmt = (d: Date) =>
   .prose :global(h2) {
     margin-top: 2.2rem;
     color: var(--cyan);
+    font-size: inherit;
   }
   .prose :global(h3) {
     margin-top: 1.8rem;
+    font-size: inherit;
   }
   .prose :global(p),
   .prose :global(li) {
-    line-height: 1.85;
+    line-height: 1.7;
   }
   .prose :global(ul),
   .prose :global(ol) {
