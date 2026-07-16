@@ -27,6 +27,26 @@ import Base from "../layouts/Base.astro";
     animation: reveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s backwards;
   }
 
+  /* Typewriter, once the name has landed. clip-path sweeps left-to-right in
+     one step per character — Monocraft is monospace, so each step is exactly
+     one glyph. Only applied where the line fits on a single row: wrapped, the
+     sweep would cut across both rows at once. */
+  @media (min-width: 480px) {
+    .oneliner {
+      width: fit-content;
+      animation: type 1.6s steps(36, end) 0.8s backwards;
+    }
+  }
+
+  @keyframes type {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
   /* Starting state lives in the keyframes, not the base rule: the global
      reduced-motion override drops the animation, and anything hidden here
      would stay hidden. */
