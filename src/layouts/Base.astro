@@ -51,7 +51,13 @@ const year = new Date().getFullYear();
   <body>
     <header class="site-header">
       <nav class="wrap nav">
-        <a class="brand" href="/">home</a>
+        <a
+          href="/"
+          class:list={["nav-link", { active: isActive("/") }]}
+          aria-current={isActive("/") ? "page" : undefined}
+        >
+          home
+        </a>
         <ul class="nav-links">
           {
             nav
@@ -119,7 +125,7 @@ const year = new Date().getFullYear();
       main {
         flex: 1;
         width: 100%;
-        padding-block: clamp(2rem, 6vw, 4rem);
+        padding-block: clamp(1rem, 3vw, 2rem) clamp(2rem, 6vw, 4rem);
       }
 
       .site-header {
@@ -137,17 +143,7 @@ const year = new Date().getFullYear();
         justify-content: space-between;
         gap: 1rem;
         padding-block: 0.9rem;
-      }
-
-      .brand {
-        font-size: 1.2rem;
-        color: var(--text);
-        border: 0;
-        letter-spacing: 0.1em;
-      }
-      .brand:hover {
-        color: var(--magenta);
-        text-shadow: var(--glow-magenta);
+        font-size: 0.95rem;
       }
 
       .nav-links {
@@ -162,9 +158,15 @@ const year = new Date().getFullYear();
         font-size: 0.95rem;
       }
 
+      /* The auto margin must sit on the flex item (the <li>), not the button
+         inside it. Auto rather than a fixed offset — a fixed one overflowed
+         on mobile. */
+      .nav-links li:last-child {
+        margin-left: auto;
+      }
+
       /* text dark-mode toggle, pinned to the far right (responsive, no overflow) */
       .theme-toggle {
-        margin-left: auto;
         padding: 0;
         background: none;
         border: 0;
