@@ -16,6 +16,7 @@ import Base from "../layouts/Base.astro";
 
   h1 {
     margin: 0 0 0.6rem;
+    animation: reveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
   }
 
   .oneliner {
@@ -23,5 +24,16 @@ import Base from "../layouts/Base.astro";
     color: var(--muted);
     font-size: clamp(1.1rem, 2.5vw, 1.5rem);
     letter-spacing: 0.06em;
+    animation: reveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s backwards;
+  }
+
+  /* Starting state lives in the keyframes, not the base rule: the global
+     reduced-motion override drops the animation, and anything hidden here
+     would stay hidden. */
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
   }
 </style>
