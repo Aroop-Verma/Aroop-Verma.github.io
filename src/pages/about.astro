@@ -129,11 +129,13 @@ const socials = [
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .socials {
     gap: 0.5rem 1.4rem;
     font-size: 1.05rem;
+  }
+
+  /* opt out of the global link underline; hover still recolours */
+  .socials a,
+  .socials a:hover {
+    border-bottom: 0;
   }
 </style>
