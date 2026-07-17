@@ -26,7 +26,7 @@ const year = new Date().getFullYear();
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -41,42 +41,39 @@ const year = new Date().getFullYear();
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title}</title>
     <script is:inline>
-      // Set theme before paint to avoid a flash. Defaults to light.
+      // Set theme before paint to avoid a flash. Defaults to dark; the
+      // attribute is already on <html> so no-JS lands on dark too.
       (function () {
         var saved = localStorage.getItem("theme");
-        document.documentElement.dataset.theme = saved === "dark" ? "dark" : "light";
+        document.documentElement.dataset.theme = saved === "light" ? "light" : "dark";
       })();
     </script>
   </head>
   <body>
     <header class="site-header">
       <nav class="wrap nav">
-        <a
-          href="/"
-          class:list={["nav-link", { active: isActive("/") }]}
-          aria-current={isActive("/") ? "page" : undefined}
-        >
-          home
-        </a>
+        {/* Every item — home included — is an <li> in this one list. They used
+            to sit in two different flex containers, which left home unable to
+            share a baseline with the rest. */}
         <ul class="nav-links">
           {
-            nav
-              .filter((n) => n.href !== "/")
-              .map((n) => (
-                <li>
-                  <a
-                    href={n.href}
-                    class:list={["nav-link", { active: isActive(n.href) }]}
-                    aria-current={isActive(n.href) ? "page" : undefined}
-                  >
-                    {n.label}
-                  </a>
-                </li>
-              ))
+            nav.map((n) => (
+              <li>
+                <a
+                  href={n.href}
+                  class:list={["nav-link", { active: isActive(n.href) }]}
+                  aria-current={isActive(n.href) ? "page" : undefined}
+                >
+                  {n.label}
+                </a>
+              </li>
+            ))
           }
           <li>
+            <!-- Label matches the dark default; the script re-syncs it if a
+                 light preference is stored. -->
             <button id="theme-toggle" class="theme-toggle" type="button">
-              dark mode
+              light mode
             </button>
           </li>
         </ul>
@@ -138,24 +135,30 @@ const year = new Date().getFullYear();
       }
 
       .nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
         padding-block: 0.9rem;
         font-size: 0.95rem;
       }
 
       .nav-links {
         display: flex;
-        flex: 1;
-        flex-wrap: wrap;
-        align-items: center;
+        align-items: baseline;
         gap: 0.35rem 1.1rem;
         list-style: none;
         margin: 0;
         padding: 0;
-        font-size: 0.95rem;
+      }
+
+      /* Baseline-aligned, so the toggle's text sits on the same line as the
+         links regardless of their differing box heights. Deliberately no
+         flex-wrap: the row must stay one line — wrapping is what produced the
+         three-row bar on phones. Narrow screens tighten instead, below. */
+      @media (max-width: 480px) {
+        .nav {
+          font-size: 0.8rem;
+        }
+        .nav-links {
+          gap: 0.8rem;
+        }
       }
 
       /* The auto margin must sit on the flex item (the <li>), not the button
