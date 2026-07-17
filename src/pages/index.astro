@@ -5,7 +5,14 @@ import Base from "../layouts/Base.astro";
 <Base>
   <section class="hero">
     <h1><span class="gradient-text">Aroop Verma</span></h1>
-    <p class="oneliner">biology, data, and the space between</p>
+    {/* Split so each fragment can be swept on its own. The joining space is a
+        hard &nbsp; inside fragment a — the compiler strips whitespace between
+        the tags, and a plain space would collapse at the line break anyway. */}
+    <p class="oneliner">
+      <span class="frag a">biology, data,&nbsp;</span><span class="frag b"
+        >and the space between</span
+      >
+    </p>
   </section>
 </Base>
 
@@ -24,17 +31,38 @@ import Base from "../layouts/Base.astro";
     color: var(--muted);
     font-size: clamp(1.1rem, 2.5vw, 1.5rem);
     letter-spacing: 0.06em;
-    animation: reveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s backwards;
   }
 
   /* Typewriter, once the name has landed. clip-path sweeps left-to-right in
      one step per character — Monocraft is monospace, so each step is exactly
-     one glyph. Only applied where the line fits on a single row: wrapped, the
-     sweep would cut across both rows at once. */
-  @media (min-width: 480px) {
-    .oneliner {
+     one glyph, and the step count of each fragment must match its own
+     character count.
+
+     inline-block so the box hugs its text: the sweep is a percentage of the
+     border box, and a full-width block would make it lag behind the glyphs.
+     Sweeping each fragment separately is also what lets this run on phones —
+     one sweep across a wrapped line would cut through both rows at once. */
+  .frag {
+    display: inline-block;
+  }
+
+  .frag.a {
+    /* 15 chars incl. the trailing nbsp: 15/36 of the 1.6s budget */
+    animation: type 0.67s steps(15, end) 0.8s backwards;
+  }
+
+  .frag.b {
+    /* 21 chars, starting after fragment a and its trailing space */
+    animation: type 0.93s steps(21, end) 1.47s backwards;
+  }
+
+  /* Below 480px the line can't fit on one row. Forcing the break here puts it
+     where the fragments already split, so each row is swept by exactly one
+     animation instead of wrapping mid-fragment. */
+  @media (max-width: 479px) {
+    .frag {
+      display: block;
       width: fit-content;
-      animation: type 1.6s steps(36, end) 0.8s backwards;
     }
   }
 
