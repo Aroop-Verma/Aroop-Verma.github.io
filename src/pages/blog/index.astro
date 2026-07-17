@@ -47,11 +47,12 @@ const fmt = (d: Date) =>
 
   /* Same hard-shadow language as the skills boxes — but these are links, so
      hover presses the card into its shadow instead of doing nothing. */
+  /* No min-height: the banner hugs its content. A 170px floor left ~46px of
+     dead space under a short post, since the date is pushed to the foot. */
   .post-grid .post {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
-    min-height: 170px;
     border: 1px solid var(--text);
     box-shadow: 6px 6px 0 var(--text);
     transition: transform 0.12s ease, box-shadow 0.12s ease;
