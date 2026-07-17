@@ -72,6 +72,25 @@ const fmt = (d: Date) =>
     gap: 0.4rem;
   }
 
+  /* Post prose sits a step below the global body size (17px): Monocraft's tall
+     x-height makes 17px read chunky at length. Scoped to the article, so the
+     rest of the site keeps its scale. Flat, so no clamp — the global body rule
+     only spans 16→17px anyway. */
+  .prose {
+    font-size: 16px;
+  }
+
+  /* Post prose fills the content column and shares its right edge with the nav
+     and footer. The global `--measure` (68ch = 748px at 16px) is narrower than
+     the column (796px), so it broke lines ~48px early and read as cutting off
+     prematurely. The column itself (`.wrap`, max-width 860px) is the measure
+     here — it lands at ~72 chars/line, still inside the comfortable range.
+     The override on <p> is needed because global.css caps every <p>. */
+  .prose,
+  .prose :global(p) {
+    max-width: none;
+  }
+
   /* long-form prose — extra breathing room for the pixel font */
   .prose :global(h2) {
     margin-top: 2.2rem;
